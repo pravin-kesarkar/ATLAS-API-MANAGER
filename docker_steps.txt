@@ -1,0 +1,24 @@
+#to build image
+1- docker build -t IMAGE NAME  (atlas-api-failed-notification-service) .
+
+# show docker image 
+1-docker image ls
+
+# run docker image
+1- docker run image_name (atlas-api-failed-notification-service)
+
+# REMOVE DOCKER IAMGE 
+1- docker rmi atlas-api-failed-notification-service
+
+# TO CHECK WHICH CONTAINER RUNNING 
+1- docker ps
+2- docker ps -a
+
+# TO ECR LOGIN AWS
+-1 aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin
+
+# TO TAG IMAGE 
+1- docker tag atlas-api-failed-notification-service:latest 
+
+# PUSH DOCKER IMAGE
+1- docker push AWS / IMAGE NAME :TAG
