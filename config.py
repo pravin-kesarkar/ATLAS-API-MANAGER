@@ -10,4 +10,5 @@ open_search_cread={
     "opensearch_endpoint" :os.environ.get("ELASTIC_SEARCH_HOST"),
     "opensearch_user" : os.environ.get("ELASTIC_SEARCH_USERNAME"),
     "opensearch_password" : os.environ.get("ELASTIC_SEARCH_PASSWORD") 
-    }
+}
+
