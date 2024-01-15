@@ -1,11 +1,15 @@
 ''' 
 ATLAS MAIL BODY TEMPLATE
 '''
+import os
+ATLAS_NOTIFICATION_SERVICE_ENDPOINT=os.environ.get("ATLAS_NOTIFICATION_SERVICE_ENDPOINT")
+ATLAS_CLIENT_ID=os.environ.get("ATLAS_CLIENT_ID")
+ATLAS_CLIENT_SECRET=os.environ.get("ATLAS_CLIENT_SECRET")
 
 def mail_body(email_list,start_time,end_time,html_content):
-    url ='/v1/send-email'
-    headers={'x-atlas-client-id':'Atlas-Developer-Portal-Microservice',
-    'x-atlas-client-secret':'C?NPwXUW=Gc5pNsC?no9xnAr*cjX}3JN7>~-dc27Bv2sV+cWD3*9DH2',
+    url =f'{ATLAS_NOTIFICATION_SERVICE_ENDPOINT}/v1/send-email'
+    headers={'x-atlas-client-id':ATLAS_CLIENT_ID,
+    'x-atlas-client-secret':ATLAS_CLIENT_SECRET,
     'Content-Type':'application/json'}
     email_list=[]
     email_list.append('pravin.kesarkar@acc.ltd')
