@@ -1,7 +1,6 @@
 from opensearchpy import OpenSearch
 from datetime import datetime, timedelta,date
 from config import *
-from notification import *
 from template import *
 import pymysql
 import requests
