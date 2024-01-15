@@ -1,12 +1,13 @@
+import os
 atlas_db_cread={
-    'host':'atlas-db-uat.c9v4py5vubyn.ap-south-1.rds.amazonaws.com',
-    'user':'master',
-    'password':'AtlasDB123##',
-    'port':3306
+    'host':os.environ.get("DB_PORT"),
+    'user':os.environ.get("DB_USER"),
+    'password':os.environ.get("DB_PASSWORD"),
+    'port':os.environ.get("DB_PORT")
 }
 
 open_search_cread={
-    "opensearch_endpoint" : "https://vpc-atlas-uat-domain-2qgs5mabkjzt7e7poczncx4o6y.ap-south-1.es.amazonaws.com:443",
-    "opensearch_user" : "AtlasSearch",
-    "opensearch_password" : "Atlas123##" 
+    "opensearch_endpoint" :os.environ.get("ELASTIC_SEARCH_HOST"),
+    "opensearch_user" : os.environ.get("ELASTIC_SEARCH_USERNAME"),
+    "opensearch_password" : os.environ.get("ELASTIC_SEARCH_PASSWORD") 
     }

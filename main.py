@@ -12,13 +12,12 @@ date=date.today()
 current_datetime = datetime.now()
 
 # Subtract 10 minutes
-new_datetime = current_datetime - timedelta(minutes=500)
+new_datetime = current_datetime - timedelta(minutes=10)
 
 start_time=current_datetime.strftime("%Y-%m-%d %H:%M:%S")
 end_time=new_datetime.strftime("%Y-%m-%d %H:%M:%S")
 
 print(f'start_date= {start_time}  end time:- {end_time}')
-
 
 open_search_query={
     "query":{
@@ -95,6 +94,7 @@ def getEmailList():
 def report_gen():
     atlas_failed_name=[]
     atlas_failed_count=[]
+    output_list = []
     df=None
     df_column=['API NAME','API FAILED COUNT']
     # main fucnction
@@ -117,36 +117,34 @@ def report_gen():
                 atlas_failed_count.append(str(api_data['doc_count']) + ' Times Failed in last 15 MIN.')
 
         if atlas_failed_name:
-            # Creating a DataFrame
-            data = {'API NAME': atlas_failed_name, 'API FAILED COUNT': atlas_failed_count}
-            df = pd.DataFrame(data)
-            print(df)
+            # Iterate over the lists and create dictionaries
+            for api_name, counts in zip(atlas_failed_name, atlas_failed_count):
+                output_list.append({"name": api_name, "failure_count": counts})
+
+            print('Failed API List',output_list)
             api_name=api_name[0][0]
             failed_count=api_data['doc_count']
         conn.close()
 
     except Exception as e:
         print(f'Failed to generate report due to {e}')
-    return df,atlas_failed_name
+    return output_list,atlas_failed_name
 
 def Failed_Notification():
 
     #EMAIL ATLAS TEMPLATE
-    df,atlas_failed_name=report_gen()
+    output_list,atlas_failed_name=report_gen()
     email_list=getEmailList()
     try:
         subject='ATLAS API FAILED NOTIFICATION'
         if atlas_failed_name:
-            html_content = df.to_html(index=False)
-            payload,url,headers=mail_body(email_list,start_time,end_time,df)
+            payload,url,headers=mail_body(email_list,start_time,end_time,output_list)
             print(payload)
 
             # payload=json.dumps(payload)
-
             x = requests.post(url,headers=headers, data = payload,timeout=30)
             response=x.json()
             print('response',response)
-            send_mail(subject,html_content)
         else:
             print('NO DATA FOUND ...')
     except Exception as e:
