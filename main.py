@@ -6,6 +6,7 @@ import pymysql
 import requests
 import json
 import pandas as pd
+import time
 date=date.today()
 
 current_datetime = datetime.now()
@@ -149,4 +150,7 @@ def Failed_Notification():
     except Exception as e:
         print('Failed to sent notification',e)
 
-Failed_Notification()
+
+while True:
+    Failed_Notification()
+    time.sleep(600)
