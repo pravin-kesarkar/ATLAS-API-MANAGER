@@ -12,12 +12,12 @@ date=date.today()
 current_datetime = datetime.now()
 
 # Subtract 10 minutes
-new_datetime = current_datetime - timedelta(minutes=10)
+new_datetime = current_datetime - timedelta(minutes=3)
 
 start_time=current_datetime.strftime("%Y-%m-%d %H:%M:%S")
 end_time=new_datetime.strftime("%Y-%m-%d %H:%M:%S")
 
-print(f'start_date= {start_time}  end time:- {end_time}')
+print(f'start_date= {end_time}  end time:- {start_time}')
 
 open_search_query={
     "query":{
@@ -27,7 +27,7 @@ open_search_query={
                     "range": {
                         "status_code": {
                         "gte": 400,
-                        "lte": 500
+                        "lte": 600
                             }
                         }
                 },
@@ -88,7 +88,7 @@ def getEmailList():
             email_list.append(list(row)[0])
         conn.close()
     except Exception as e:
-        print('Error in getEmailList() FAILED TO GET EMIAL_LIST FROM DB DUE TO ',e)
+        print('Error in getEmailList() FAILED TO GET EMIAL_LIST FROM DB ',e)
     return email_list
 
 def report_gen():
@@ -114,7 +114,7 @@ def report_gen():
             if api_name:
                 api_failed_count=api_data['doc_count']
                 atlas_failed_name.append(api_name[0][0])
-                atlas_failed_count.append(str(api_data['doc_count']) + ' Times Failed in last 15 MIN.')
+                atlas_failed_count.append(str(api_data['doc_count']))
 
         if atlas_failed_name:
             # Iterate over the lists and create dictionaries
@@ -135,22 +135,21 @@ def Failed_Notification():
     #EMAIL ATLAS TEMPLATE
     output_list,atlas_failed_name=report_gen()
     email_list=getEmailList()
+
     try:
         subject='ATLAS API FAILED NOTIFICATION'
         if atlas_failed_name:
             payload,url,headers=mail_body(email_list,start_time,end_time,output_list)
-            print(payload)
+            json_data = json.dumps(payload, indent=2)
+            print('payload - ',json_data)
 
             # payload=json.dumps(payload)
-            x = requests.post(url,headers=headers, data = payload,timeout=30)
+            x = requests.post(url,headers=headers, data = json_data,timeout=30)
             response=x.json()
-            print('response',response)
+            print('response -',response)
         else:
             print('NO DATA FOUND ...')
     except Exception as e:
         print('Failed to sent notification',e)
 
-
-while True:
-    Failed_Notification()
-    time.sleep(600)
+Failed_Notification()

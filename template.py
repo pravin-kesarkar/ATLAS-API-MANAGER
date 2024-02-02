@@ -11,22 +11,16 @@ def mail_body(email_list,start_time,end_time,html_content):
     headers={'x-atlas-client-id':ATLAS_CLIENT_ID,
     'x-atlas-client-secret':ATLAS_CLIENT_SECRET,
     'Content-Type':'application/json'}
-    email_list=[]
-    email_list.append('pravin.kesarkar@acc.ltd')
-    print(email_list)
-
     payload={   
-    'to': ['atlas.support@acc.ltd'],
+    'to': email_list,
     'cc':[] ,
     'subject': 'API Faliure Notification',
     'template': 'apialerts',
     'payload': {
-        "timestamp":str(start_time) + (end_time),
+        "timestamp":f'{end_time} To {start_time} ',
         "alerts":html_content
     },
     'priority': 'high',
     'attachments': []
     }
-    # print('Payload Body ',payload)
-    
     return payload,url,headers
